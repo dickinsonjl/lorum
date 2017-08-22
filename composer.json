@@ -1,5 +1,5 @@
 {
-    "name": "dickinsonjl/Lorum",
+    "name": "dickinsonjl/lorum",
     "description": "Lorem ipsum dolor sit amet",
     "keywords": ["lorem ipsum dolor sit amet"],
     "authors": [
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "dickinsonjl\\Lorum\\": "src"
+            "dickinsonjl\\lorum\\": "src"
         }
     }
 }
