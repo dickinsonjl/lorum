@@ -12,4 +12,4 @@ var_dump($lorum->wordPool);
 var_dump($lorum->wordsPerPhraseFrequency);
 var_dump($lorum->phrasesPerSentenceFrequency);
 var_dump($lorum->wordLengthFrequency);
-echo $lorum->generateParagraph();
+echo $lorum->generateParagraph();//
