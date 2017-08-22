@@ -4,7 +4,7 @@ namespace dickinsonjl;
 
 class Lorum {
 
-    public $seedFile = 'example.txt';
+    public $seedFile = 'src/example.txt';
     public $wordsPerPhraseFrequency = array(
         5 => 1,
         6 => 5,
@@ -88,7 +88,7 @@ class Lorum {
                         $phraseCount = 0;
                         $sentenceCount++;
                         $phrases = explode(',', trim($singleSentence));
-                        foreach ($prases as $singlePhrase) {
+                        foreach ($phrases as $singlePhrase) {
                             if(trim($singlePhrase) != ''){
                                 $wordCount = 0;
                                 $phraseCount++;
@@ -96,7 +96,7 @@ class Lorum {
                                 foreach ($words as $singleWord) {
                                     if(trim($singleWord) != ''){
                                         $wordCount++;
-                                        $realWord = trim($singleWord);
+                                        $realWord = strtolower(trim($singleWord));
                                         $wordLength = strlen($realWord);
                                         $this->indexWord($realWord); // catalogue unique words found in text
                                     }
@@ -113,19 +113,42 @@ class Lorum {
     }
 
     protected function indexWord($realWord){
-
+        $wordLength = strlen($realWord);
+        $this->frequencyIndex('wordLengthFrequency', $wordLength);
+        if (!isset($this->wordPool[$wordLength])) {
+            $this->wordPool[$wordLength] = array($realWord);
+        } else {
+            if(!in_array($realWord, $this->wordPool[$wordLength])){
+                $this->wordPool[$wordLength][] = $realWord;
+            }
+        }
     }
 
     protected function indexWordsPerPhrase($wordCount){
-
+        $this->frequencyIndex('wordsPerPhraseFrequency', $wordCount);
     }
 
     protected function indexPhrasesPerSentence($phraseCount){
-
+        $this->frequencyIndex('phrasesPerSentenceFrequency', $phraseCount);
     }
 
     protected function indexSentencePerParagraph($sentenceCount){
+        $this->frequencyIndex('sentencePerParagraphFrequency', $sentenceCount);
+    }
 
+    protected function frequencyIndex($indexName, $value){
+        // index name is "wordsPerPhraseFrequency" etc.
+        // value is what we are keeping track of, as duplicated of value are processed we do: index[value]++
+        if(!isset($this->$indexName)){
+            $this->doError('Cound not find frequency tracker "' . $indexName . '"');
+            return;
+        }
+
+        if(!isset($this->$indexName[$value])){
+            $this->$indexName[$value] = 1;
+        } else {
+            $this->$indexName[$value]++;
+        }
     }
 
     protected function ClearIndexes(){
