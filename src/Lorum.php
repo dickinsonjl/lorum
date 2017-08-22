@@ -66,6 +66,74 @@ class Lorum {
 
     }
 
+    public function generateMultiParagraphs($numberOfParagraphs){
+        for ($i=0; $i < $numberOfParagraphs; $i++) { 
+            $this->generateParagraph();
+        }
+    }
+
+    public function generateParagraph(){
+        $paragraphText = '';
+        // random number of sentences,
+        $numberOfSentences = $this->findALikely($this->sentencePerParagraphFrequency);
+        for ($s=0; $s < $numberOfSentences; $s++) { 
+            // with random number of phrases,
+            $numberOfPhrases = $this->findALikely($this->phrasesPerSentenceFrequency);
+            $firstPhrase = true;
+            for ($p=0; $p < $numberOfPhrases; $p++) { 
+                if(!$firstPhrase){
+                    $paragraphText .= ',';
+                } else {
+                    $firstWordInSentence = true;
+                }
+                // with random number of words,
+                $numberOfWords = $this->findALikely($this->wordsPerPhraseFrequency);
+                for ($w=0; $w < $numberOfWords; $w++) { 
+                    // of random length,
+                    $lengthOfWord = $this->findALikely($this->wordLengthFrequency);
+                    // picked at random from the pool
+                    $theWord = $this->findAWordOfLength($lengthOfWord);
+                    // first word of each sentence should have capital first letter
+                    if($firstWordInSentence){
+                        $theWord = ucfirst($theWord);
+                        $paragraphText .= $theWord;
+                    } else {
+                        $paragraphText .= ' ' . $theWord;
+                    }
+                }
+                $firstPhrase = false;
+                $firstWordInSentence = false;
+            }
+            $paragraphText .= '. ';
+        }
+        $paragraphText .= "\n\n";
+        return $paragraphText;
+    }
+
+    protected function findAWordOfLength($theLength){
+        if(!isset($this->wordPool[$theLength])){
+            $this->doError('No words found of length:' . $theLength);
+            return '?';
+        }
+        $theWord = array_rand($this->wordPool[$theLength]);
+        // echo $theWord;
+        return $theWord;
+    }
+
+    protected function findALikely($frequencyIndex){
+        $totalFrequency = 0;
+        foreach ($frequencyIndex as $fKey => $fValue) {
+            $totalFrequency +=$fValue;
+        }
+        $randomPick = rand(1, $totalFrequency);
+        foreach ($frequencyIndex as $fKey => $fValue) {
+            $randomPick -= $fValue;
+            if($randomPick < 1){
+                return $fKey;
+            }
+        }
+    }
+
     public function buildCache(){
         if (file_exists($this->seedFile)) {
             $this->processSeedFile();
