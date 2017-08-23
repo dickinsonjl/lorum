@@ -1,6 +1,7 @@
 {
     "name": "dickinsonjl/lorum",
     "description": "Lorem ipsum dolor sit amet",
+    "license": "MIT",
     "keywords": ["lorem ipsum dolor sit amet"],
     "authors": [
         {
@@ -16,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "dickinsonjl\\lorum\\": "src"
+            "Dickinsonjl\\Lorum\\": "src"
         }
     }
 }
