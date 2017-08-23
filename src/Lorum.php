@@ -4,7 +4,7 @@ namespace dickinsonjl;
 
 class Lorum {
 
-    public $seedFile = 'src/example.txt';
+    public $seedFile = 'src/trump.txt';
     public $wordsPerPhraseFrequency = array(
         5 => 1,
         6 => 5,
@@ -67,28 +67,44 @@ class Lorum {
     }
 
     public function generateMultiParagraphs($numberOfParagraphs){
-        for ($i=0; $i < $numberOfParagraphs; $i++) { 
+        for ($i=0; $i < $numberOfParagraphs; $i++) {
             $this->generateParagraph();
         }
     }
 
-    public function generateParagraph(){
+    public function giveMeParagraph(){
+        return trim($this->generateParagraph());
+    }
+
+    protected function generateParagraph(){
         $paragraphText = '';
         // random number of sentences,
         $numberOfSentences = $this->findALikely($this->sentencePerParagraphFrequency);
-        for ($s=0; $s < $numberOfSentences; $s++) { 
+        for ($s=0; $s < $numberOfSentences; $s++) {
+            $paragraphText .= $this->generateSentence();
+        }
+        $paragraphText .= PHP_EOL . PHP_EOL;
+        return $paragraphText;
+    }
+
+    public function giveMeSentence(){
+        return trim($this->generateSentence());
+    }
+
+    protected function generateSentence(){
             // with random number of phrases,
             $numberOfPhrases = $this->findALikely($this->phrasesPerSentenceFrequency);
+            $sentenceText = '';
             $firstPhrase = true;
-            for ($p=0; $p < $numberOfPhrases; $p++) { 
+            $firstWordInSentence = true;
+            for ($p=0; $p < $numberOfPhrases; $p++) {
                 if(!$firstPhrase){
-                    $paragraphText .= ',';
+                    $sentenceText .= ',';
                 } else {
-                    $firstWordInSentence = true;
                 }
                 // with random number of words,
                 $numberOfWords = $this->findALikely($this->wordsPerPhraseFrequency);
-                for ($w=0; $w < $numberOfWords; $w++) { 
+                for ($w=0; $w < $numberOfWords; $w++) {
                     // of random length,
                     $lengthOfWord = $this->findALikely($this->wordLengthFrequency);
                     // picked at random from the pool
@@ -96,18 +112,20 @@ class Lorum {
                     // first word of each sentence should have capital first letter
                     if($firstWordInSentence){
                         $theWord = ucfirst($theWord);
-                        $paragraphText .= $theWord;
+                        $sentenceText .= $theWord;
                     } else {
-                        $paragraphText .= ' ' . $theWord;
+                        $sentenceText .= ' ' . $theWord;
                     }
+                    $firstWordInSentence = false;
                 }
                 $firstPhrase = false;
-                $firstWordInSentence = false;
             }
-            $paragraphText .= '. ';
-        }
-        $paragraphText .= "\n\n";
-        return $paragraphText;
+            $sentenceText .= '. ';
+            return $sentenceText;
+    }
+
+    public function giveMeWord($wordLength){
+        return trim($this->findAWordOfLength($wordLength));
     }
 
     protected function findAWordOfLength($theLength){
@@ -115,9 +133,9 @@ class Lorum {
             $this->doError('No words found of length:' . $theLength);
             return '?';
         }
-        $theWord = array_rand($this->wordPool[$theLength]);
+        $theWordIndex = array_rand($this->wordPool[$theLength]);
         // echo $theWord;
-        return $theWord;
+        return $this->wordPool[$theLength][$theWordIndex];
     }
 
     protected function findALikely($frequencyIndex){
