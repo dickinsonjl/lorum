@@ -4,7 +4,7 @@ namespace dickinsonjl;
 
 class Lorum {
 
-    public $seedFile = 'src/trump.txt';
+    public $seedFile = 'src/example.txt';
     public $wordsPerPhraseFrequency = array(
         5 => 1,
         6 => 5,
@@ -66,10 +66,16 @@ class Lorum {
 
     }
 
+    public function giveMeMultiParagraph($numberOfParagraphs){
+        return trim($this->generateMultiParagraphs($numberOfParagraphs));
+    }
+
     public function generateMultiParagraphs($numberOfParagraphs){
+        $mutliParagraphText = '';
         for ($i=0; $i < $numberOfParagraphs; $i++) {
-            $this->generateParagraph();
+            $mutliParagraphText .= $this->generateParagraph();
         }
+        return $mutliParagraphText;
     }
 
     public function giveMeParagraph(){
@@ -180,9 +186,10 @@ class Lorum {
                                 $phraseCount++;
                                 $words = explode(' ', trim($singlePhrase));
                                 foreach ($words as $singleWord) {
+                                    $singleWord = preg_replace("/[^A-Za-z0-9' ]/", "", $singleWord);
                                     if(trim($singleWord) != ''){
                                         $wordCount++;
-                                        $realWord = strtolower(trim($singleWord));
+                                        $realWord = strtolower(trim($singleWord, "' \t\n\r\0\x0B"));
                                         $wordLength = strlen($realWord);
                                         $this->indexWord($realWord); // catalogue unique words found in text
                                     }
@@ -205,6 +212,9 @@ class Lorum {
             $this->wordPool[$wordLength] = array($realWord);
         } else {
             if(!in_array($realWord, $this->wordPool[$wordLength])){
+                if($realWord == 'i'){
+                    $realWord = 'I';
+                }
                 $this->wordPool[$wordLength][] = $realWord;
             }
         }
