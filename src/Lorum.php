@@ -186,7 +186,7 @@ class Lorum {
                                 $phraseCount++;
                                 $words = explode(' ', trim($singlePhrase));
                                 foreach ($words as $singleWord) {
-                                    $singleWord = preg_replace("/[^A-Za-z0-9'’ ]/", "", $singleWord);
+                                    $singleWord = preg_replace("/[^A-Za-z0-9'’′ ]/", "", $singleWord);
                                     if(trim($singleWord) != ''){
                                         $wordCount++;
                                         $realWord = strtolower(trim($singleWord, "' \t\n\r\0\x0B"));
