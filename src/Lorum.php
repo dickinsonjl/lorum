@@ -1,6 +1,6 @@
 <?php
 
-namespace dickinsonjl;
+namespace Dickinsonjl\Lorum;
 
 class Lorum {
 

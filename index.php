@@ -1,8 +1,8 @@
 <?php
-require "src/Lorum.php";
-// require "vendor/autoload.php";
+// require "src/Lorum.php";
+require "vendor/autoload.php";
 
-use dickinsonjl\Lorum;
+use Dickinsonjl\Lorum\Lorum;
 
 
 $lorum = new Lorum();
