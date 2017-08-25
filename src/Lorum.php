@@ -4,7 +4,7 @@ namespace Dickinsonjl\Lorum;
 
 class Lorum {
 
-    public $seedFile = 'src/trump.txt';
+    public $seedFile = __DIR__ . '/example.txt';
     public $wordsPerPhraseFrequency = array(
         5 => 1,
         6 => 5,
