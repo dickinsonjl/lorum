@@ -13,6 +13,7 @@ $lorum->buildCache();
 // var_dump($lorum->phrasesPerSentenceFrequency);
 // var_dump($lorum->wordLengthFrequency);
 // echo $lorum->giveMeWord(4) . PHP_EOL;
+echo $lorum->giveMePhrase() . PHP_EOL;
 // echo $lorum->giveMeSentence() . PHP_EOL;
 // echo $lorum->giveMeParagraph() . PHP_EOL;
-echo $lorum->giveMeMultiParagraph(5) . PHP_EOL;
+// echo $lorum->giveMeMultiParagraph(5) . PHP_EOL;

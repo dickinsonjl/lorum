@@ -118,7 +118,7 @@ class Lorum {
         for ($s=0; $s < $numberOfSentences; $s++) {
             $paragraphText .= $this->generateSentence();
         }
-        $paragraphText .= PHP_EOL . PHP_EOL;
+        $paragraphText = trim($paragraphText) . PHP_EOL . PHP_EOL;
         return $paragraphText;
     }
 
@@ -131,32 +131,36 @@ class Lorum {
             $numberOfPhrases = $this->findALikely($this->phrasesPerSentenceFrequency);
             $sentenceText = '';
             $firstPhrase = true;
-            $firstWordInSentence = true;
             for ($p=0; $p < $numberOfPhrases; $p++) {
                 if(!$firstPhrase){
                     $sentenceText .= ',';
-                } else {
                 }
-                // with random number of words,
-                $numberOfWords = $this->findALikely($this->wordsPerPhraseFrequency);
-                for ($w=0; $w < $numberOfWords; $w++) {
-                    // of random length,
-                    $lengthOfWord = $this->findALikely($this->wordLengthFrequency);
-                    // picked at random from the pool
-                    $theWord = $this->findAWordOfLength($lengthOfWord);
-                    // first word of each sentence should have capital first letter
-                    if($firstWordInSentence){
-                        $theWord = ucfirst($theWord);
-                        $sentenceText .= $theWord;
-                    } else {
-                        $sentenceText .= ' ' . $theWord;
-                    }
-                    $firstWordInSentence = false;
-                }
+                $sentenceText .= $this->generatePhrase();
                 $firstPhrase = false;
             }
-            $sentenceText .= '. ';
-            return $sentenceText;
+            $sentenceText .= '.';
+            // first word of each sentence should have capital first letter
+            return ' ' . ucfirst(trim($sentenceText));
+    }
+
+    public function giveMePhrase(){
+        return ucfirst(trim($this->generatePhrase()));
+    }
+
+    protected function generatePhrase(){
+            // with random number of phrases,
+            $numberOfPhrases = $this->findALikely($this->phrasesPerSentenceFrequency);
+            $phraseText = '';
+            // with random number of words,
+            $numberOfWords = $this->findALikely($this->wordsPerPhraseFrequency);
+            for ($w=0; $w < $numberOfWords; $w++) {
+                // of random length,
+                $lengthOfWord = $this->findALikely($this->wordLengthFrequency);
+                // picked at random from the pool
+                $theWord = $this->findAWordOfLength($lengthOfWord);
+                $phraseText .= ' ' . $theWord;
+            }
+            return $phraseText;
     }
 
     public function giveMeWord($wordLength){
