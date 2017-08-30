@@ -8,26 +8,27 @@ class Lorum {
         5 => 1,
         6 => 5,
         7 => 4,
-        8 => 2
+        8 => 2,
     );
     public $phrasesPerSentenceFrequency = array(
         1 => 4,
         2 => 3,
         3 => 2,
-        4 => 1
+        4 => 1,
     );
     public $sentencePerParagraphFrequency = array(
         2 => 1,
         3 => 5,
         4 => 3,
-        5 => 1
+        5 => 1,
     );
     public $wordLengthFrequency = array(
         1 => 1,
         2 => 2,
         3 => 5,
         4 => 3,
-        5 => 1
+        5 => 1,
+        6 => 1,
     );
     public $wordPool = array(
         1 => array(
@@ -37,7 +38,14 @@ class Lorum {
         2 => array(
             'be',
             'on',
-            'of'
+            'of',
+            'to',
+            'go',
+            'no',
+            'oh',
+            'he',
+            'no',
+            'hi',
         ),
         3 => array(
             'see',
@@ -45,18 +53,40 @@ class Lorum {
             'can',
             'you',
             'end',
-            'how'
+            'how',
+            'yes',
+            'run',
+            'tin',
+            'van',
         ),
         4 => array(
             'dear',
             'when',
             'turn',
-            'face'
+            'face',
+            'dish',
+            'rain',
+            'made',
+            'here',
+            'space',
+            'pond',
+            'hand',
+            'bath',
+            'joke',
         ),
         5 => array(
             'which',
             'shine',
-            'saved'
+            'saved',
+            
+        ),
+        6 => array(
+            'friend',
+            'animal',
+            'golfer',
+            'people',
+            'jumper',
+            '',
         )
     );
 
@@ -159,8 +189,10 @@ class Lorum {
 
     public function buildCache(){
         try{
-            $seedClass = new  \Dickinsonjl\Lorum\LorumSeed();
-            $this->processSeedFile($seedClass);
+            $seedClass = new LorumSeed();
+            if(!is_null($seedClass)){
+                $this->processSeedFile($seedClass);
+            }
         } catch (Exception $e) {
             echo 'LorumSeed error:' . $e->getMessage();
         }
