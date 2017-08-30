@@ -4,7 +4,6 @@ namespace Dickinsonjl\Lorum;
 
 class Lorum {
 
-    public $seedFile = __DIR__ . '/example.txt';
     public $wordsPerPhraseFrequency = array(
         5 => 1,
         6 => 5,
@@ -159,16 +158,18 @@ class Lorum {
     }
 
     public function buildCache(){
-        if (file_exists($this->seedFile)) {
-            $this->processSeedFile();
-        } else {
-            $this->doError('Seed File not found! Using defaults.');
+        $seedClass = null;
+        try{
+            $seedClass = new LorumSeed();
+            $this->processSeedFile($seedClass);
+        } catch (Exception $e) {
+            echo 'LorumSeed error:' . $e->getMessage();
         }
     }
 
-    protected function processSeedFile(){
+    protected function processSeedFile($seedClass){
         $this->ClearIndexes();
-        $seedContent = file_get_contents($this->seedFile);
+        $seedContent = $seedClass->seedText;
 
         $paragraphs = explode("\n", trim($seedContent));
         foreach ($paragraphs as $singleParagraph) {
