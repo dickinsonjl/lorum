@@ -191,16 +191,15 @@ class Lorum {
         try{
             $seedClass = new LorumSeed();
             if(!is_null($seedClass)){
-                $this->processSeedFile($seedClass);
+                $this->processSeedContent($seedClass->seedText);
             }
         } catch (Exception $e) {
             echo 'LorumSeed error:' . $e->getMessage();
         }
     }
 
-    protected function processSeedFile($seedClass){
+    protected function processSeedContent($seedContent){
         $this->ClearIndexes();
-        $seedContent = $seedClass->seedText;
 
         $paragraphs = explode("\n", trim($seedContent));
         foreach ($paragraphs as $singleParagraph) {
