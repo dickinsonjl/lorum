@@ -158,9 +158,8 @@ class Lorum {
     }
 
     public function buildCache(){
-        $seedClass = null;
         try{
-            $seedClass = new LorumSeed();
+            $seedClass = new  \Dickinsonjl\Lorum\LorumSeed();
             $this->processSeedFile($seedClass);
         } catch (Exception $e) {
             echo 'LorumSeed error:' . $e->getMessage();
