@@ -127,25 +127,28 @@ class Lorum {
         return $paragraphText;
     }
 
-    public function giveMeSentence(){
-        return trim($this->generateSentence());
+    public function giveMeSentence($phrases=0){
+        return trim($this->generateSentence($phrases));
     }
 
-    protected function generateSentence(){
-            // with random number of phrases,
+    protected function generateSentence($phrases=0){
+        // with random number of phrases,
+        $numberOfPhrases = $phrases;
+        if($phrases == 0){
             $numberOfPhrases = $this->findALikely($this->phrasesPerSentenceFrequency);
-            $sentenceText = '';
-            $firstPhrase = true;
-            for ($p=0; $p < $numberOfPhrases; $p++) {
-                if(!$firstPhrase){
-                    $sentenceText .= ',';
-                }
-                $sentenceText .= $this->generatePhrase();
-                $firstPhrase = false;
+        }
+        $sentenceText = '';
+        $firstPhrase = true;
+        for ($p=0; $p < $numberOfPhrases; $p++) {
+            if(!$firstPhrase){
+                $sentenceText .= ',';
             }
-            $sentenceText .= $this->findALikely($this->punctuationFrequency);
-            // first word of each sentence should have capital first letter
-            return ' ' . ucfirst(trim($sentenceText));
+            $sentenceText .= $this->generatePhrase();
+            $firstPhrase = false;
+        }
+        $sentenceText .= $this->findALikely($this->punctuationFrequency);
+        // first word of each sentence should have capital first letter
+        return ' ' . ucfirst(trim($sentenceText));
     }
 
     public function giveMePhrase(){
