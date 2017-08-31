@@ -4,6 +4,11 @@ namespace Dickinsonjl\Lorum;
 
 class Lorum {
 
+    public $punctuationFrequency = array(
+        '.' => 10,
+        '!' => 2,
+        '?' => 3,
+    );
     public $wordsPerPhraseFrequency = array(
         5 => 1,
         6 => 5,
@@ -33,7 +38,7 @@ class Lorum {
     public $wordPool = array(
         1 => array(
             'a',
-            'i'
+            'I'
         ),
         2 => array(
             'be',
@@ -138,7 +143,7 @@ class Lorum {
                 $sentenceText .= $this->generatePhrase();
                 $firstPhrase = false;
             }
-            $sentenceText .= '.';
+            $sentenceText .= $this->findALikely($this->punctuationFrequency);
             // first word of each sentence should have capital first letter
             return ' ' . ucfirst(trim($sentenceText));
     }
@@ -153,11 +158,16 @@ class Lorum {
             $phraseText = '';
             // with random number of words,
             $numberOfWords = $this->findALikely($this->wordsPerPhraseFrequency);
+            $lastWordLength = 0;
             for ($w=0; $w < $numberOfWords; $w++) {
                 // of random length,
                 $lengthOfWord = $this->findALikely($this->wordLengthFrequency);
+                while(count($this->wordPool) > 1 && $lengthOfWord == $lastWordLength){
+                    $lengthOfWord = $this->findALikely($this->wordLengthFrequency);
+                }
                 // picked at random from the pool
                 $theWord = $this->findAWordOfLength($lengthOfWord);
+                $lastWordLength = $lengthOfWord;
                 $phraseText .= ' ' . $theWord;
             }
             return $phraseText;
@@ -170,7 +180,7 @@ class Lorum {
     protected function findAWordOfLength($theLength){
         if(!isset($this->wordPool[$theLength])){
             $this->doError('No words found of length:' . $theLength);
-            return '?';
+            return str_repeat('?', $theLength);
         }
         $theWordIndex = array_rand($this->wordPool[$theLength]);
         // echo $theWord;
@@ -209,7 +219,7 @@ class Lorum {
         foreach ($paragraphs as $singleParagraph) {
             if(trim($singleParagraph) != ''){
                 $sentenceCount = 0;
-                $sentences = explode('.', trim($singleParagraph));
+                $sentences = preg_split( "/(\?|\.|!)/", trim($singleParagraph));
                 foreach ($sentences as $singleSentence) {
                     if(trim($singleSentence) != ''){
                         $phraseCount = 0;
@@ -238,6 +248,7 @@ class Lorum {
                 $this->indexSentencePerParagraph($sentenceCount); // as each paragraph is processed, i.e. return char found, update index of sentences per paragraph
             }
         }
+        $this->indexPunctuation($seedContent);
     }
 
     protected function indexWord($realWord){
@@ -252,6 +263,14 @@ class Lorum {
                 }
                 $this->wordPool[$wordLength][] = $realWord;
             }
+        }
+    }
+
+    protected function indexPunctuation($content){
+        $punctuations = array('.', '!', '?');
+        foreach ($punctuations as $symbol) {
+            $occurs = substr_count($content, $symbol);
+            $this->punctuationFrequency[$symbol] = $occurs;
         }
     }
 
