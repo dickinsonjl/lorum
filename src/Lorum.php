@@ -237,7 +237,7 @@ class Lorum {
                                     $singleWord = preg_replace("/[^A-Za-z0-9'’′ ]/", "", $singleWord);
                                     if(trim($singleWord) != ''){
                                         $wordCount++;
-                                        $realWord = strtolower(trim($singleWord, "' \t\n\r\0\x0B"));
+                                        $realWord = $this->processWord($singleWord);
                                         $wordLength = strlen($realWord);
                                         $this->indexWord($realWord); // catalogue unique words found in text
                                     }
@@ -252,6 +252,14 @@ class Lorum {
             }
         }
         $this->indexPunctuation($seedContent);
+    }
+
+    protected function processWord($rawWord){
+        $resultWord = trim($rawWord, "' \t\n\r\0\x0B");
+        if(strlen($resultWord) < 1 || strtoupper($resultWord) != $resultWord){ // check for all uppercase words, LED, CRT, BBC, IBM, etc.
+            $resultWord = strtolower($resultWord);
+        }
+        return $resultWord;
     }
 
     protected function indexWord($realWord){
