@@ -127,6 +127,22 @@ class Lorum {
         return $paragraphText;
     }
 
+    public function giveMeTweet(){ // 140 char message for use with twitter
+        $limit = 120; // allow for re-tweet text "RT..."
+        $tweetText = $this->generatePhrase();
+        $tweetWords = explode(' ', $tweetText);
+        $tweetOutput = '';
+        foreach ($tweetWords as $word) {
+            if(strlen($tweetOutput) + strlen($word) + 1 > $limit){
+                break;
+            }
+            $tweetOutput .= ' ' . $word;
+        }
+        $tweetOutput = ucfirst(trim($tweetOutput));
+        $tweetOutput.= $this->findALikely($this->punctuationFrequency);
+        return $tweetOutput;
+    }
+
     public function giveMeSentence($phrases=0){
         return trim($this->generateSentence($phrases));
     }
@@ -215,7 +231,7 @@ class Lorum {
         }
     }
 
-    protected function processSeedContent($seedContent){
+    public function processSeedContent($seedContent){
         $this->ClearIndexes();
 
         $paragraphs = explode("\n", trim($seedContent));
