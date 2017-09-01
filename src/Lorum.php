@@ -256,7 +256,7 @@ class Lorum {
 
     protected function processWord($rawWord){
         $resultWord = trim($rawWord, "' \t\n\r\0\x0B");
-        if(strlen($resultWord) < 1 || strtoupper($resultWord) != $resultWord){ // check for all uppercase words, LED, CRT, BBC, IBM, etc.
+        if($rawWord != 'I' && (strlen($resultWord) < 1 || strtoupper($resultWord) != $resultWord)){ // check for all uppercase words, LED, CRT, BBC, IBM, etc.
             $resultWord = strtolower($resultWord);
         }
         return $resultWord;
@@ -269,9 +269,6 @@ class Lorum {
             $this->wordPool[$wordLength] = array($realWord);
         } else {
             if(!in_array($realWord, $this->wordPool[$wordLength])){
-                if($realWord == 'i'){
-                    $realWord = 'I';
-                }
                 $this->wordPool[$wordLength][] = $realWord;
             }
         }
