@@ -104,7 +104,7 @@ class Lorum {
         return trim($this->generateMultiParagraphs($numberOfParagraphs));
     }
 
-    public function generateMultiParagraphs($numberOfParagraphs){
+    protected function generateMultiParagraphs($numberOfParagraphs){
         $mutliParagraphText = '';
         for ($i=0; $i < $numberOfParagraphs; $i++) {
             $mutliParagraphText .= $this->generateParagraph();
