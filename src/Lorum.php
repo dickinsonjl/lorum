@@ -299,15 +299,21 @@ class Lorum {
     }
 
     protected function indexWordsPerPhrase($wordCount){
-        $this->frequencyIndex('wordsPerPhraseFrequency', $wordCount);
+        if ($wordCount > 0) {
+            $this->frequencyIndex('wordsPerPhraseFrequency', $wordCount);
+        }
     }
 
     protected function indexPhrasesPerSentence($phraseCount){
-        $this->frequencyIndex('phrasesPerSentenceFrequency', $phraseCount);
+        if ($phraseCount > 0) {
+            $this->frequencyIndex('phrasesPerSentenceFrequency', $phraseCount);
+        }
     }
 
     protected function indexSentencePerParagraph($sentenceCount){
-        $this->frequencyIndex('sentencePerParagraphFrequency', $sentenceCount);
+        if ($sentenceCount > 0) {
+            $this->frequencyIndex('sentencePerParagraphFrequency', $sentenceCount);
+        }
     }
 
     protected function frequencyIndex($indexName, $value){
