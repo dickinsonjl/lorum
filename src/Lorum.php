@@ -172,8 +172,6 @@ class Lorum {
     }
 
     protected function generatePhrase(){
-            // with random number of phrases,
-            $numberOfPhrases = $this->findALikely($this->phrasesPerSentenceFrequency);
             $phraseText = '';
             // with random number of words,
             $numberOfWords = $this->findALikely($this->wordsPerPhraseFrequency);
@@ -212,12 +210,15 @@ class Lorum {
             $totalFrequency +=$fValue;
         }
         $randomPick = rand(1, $totalFrequency);
+        $likelyVal = 0;
         foreach ($frequencyIndex as $fKey => $fValue) {
             $randomPick -= $fValue;
             if($randomPick < 1){
-                return $fKey;
+                $likelyVal = $fKey;
+                break;
             }
         }
+        return $likelyVal;
     }
 
     public function buildCache(){
@@ -254,7 +255,6 @@ class Lorum {
                                     if(trim($singleWord) != ''){
                                         $wordCount++;
                                         $realWord = $this->processWord($singleWord);
-                                        $wordLength = strlen($realWord);
                                         $this->indexWord($realWord); // catalogue unique words found in text
                                     }
                                 }
@@ -314,7 +314,7 @@ class Lorum {
         // index name is "wordsPerPhraseFrequency" etc.
         // value is what we are keeping track of, as duplicated of value are processed we do: index[value]++
         if(!isset($this->$indexName)){
-            $this->doError('Cound not find frequency tracker "' . $indexName . '"');
+            $this->doError('Could not find frequency tracker "' . $indexName . '"');
             return;
         }
 
