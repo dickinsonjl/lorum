@@ -1,4 +1,5 @@
 # lorum
+[![Latest Stable Version](https://poser.pugx.org/dickinsonjl/lorum/v/stable)](https://packagist.org/packages/dickinsonjl/lorum)[![Total Downloads](https://poser.pugx.org/dickinsonjl/lorum/downloads)](https://packagist.org/packages/dickinsonjl/lorum)[![License](https://poser.pugx.org/dickinsonjl/lorum/license)](https://packagist.org/packages/dickinsonjl/lorum)
 PHP Package - Random Text Generator
 
 Use as filler text or just for fun. Works as a Composer Package or standalone.
